@@ -29,6 +29,11 @@ async function grabInfo(url) {
 }
 
 function printData(info, args) {
+    if (info.data.length === 0) {
+        console.log('E02: Found no data for request')
+        return;
+    }
+
     for (const data in info.data) {
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~\n');
         for (const category in info.data[data]) {

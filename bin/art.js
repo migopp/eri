@@ -1,10 +1,14 @@
 module.exports = {
-	drawAbout: drawAbout,
-	drawOmen: drawOmen,
+    drawAbout: drawAbout,
+    drawOmen: drawOmen,
 };
 
+const chalk = require('chalk');
+const about = chalk.red;
+
 function drawAbout() {
-	console.log(`
+    console.log(about(`
+
    ▄████████    ▄████████  ▄█  
   ███    ███   ███    ███ ███  
   ███    █▀    ███    ███ ███▌ 
@@ -17,11 +21,11 @@ function drawAbout() {
 \n~~~ An Elden Ring CLI utility ~~~
 ---------------------------------
 ~~~~~ eri 1.0 | dev: migopp ~~~~~
-\n       \`eri -h\` for help       `);
+\n       \`eri -h\` for help       `));
 }
 
 function drawOmen() {
-	console.log(`
+    console.log(`
                                                                               ███▓  
                                                                          ████▓█ 
                                                                          ███▓██ 

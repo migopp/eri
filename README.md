@@ -5,6 +5,9 @@
 ## Introduction
 Query information about Elden Ring's various items, characters, and bosses quickly from the command line.
 
+![Screen Recording 2024-01-03 at 7 56 31 PM](https://github.com/migopp/eri/assets/128272843/8f61f050-6285-49cf-a562-65134d40f2bd)
+
+
 ## Installation
 1. Clone this repository as `git clone https://github.com/migopp/eri.git`
 2. Navigate into the `eri/` directory

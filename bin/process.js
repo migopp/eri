@@ -136,9 +136,10 @@ function printFromList(categoryName, categoryList, optList) {
                     process.stdout.write(`\t${highlight(optData)}`);
                 }
             } else {
-
+                process.stdout.write(`N/A  <>  ${optList[index]}`);
             }
         }
+        console.log();
     }
 }
 

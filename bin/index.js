@@ -9,6 +9,12 @@ const options = yargs
         type: 'boolean',
         demandOption: false,
     })
+    .option('c', {
+        alias: 'compare',
+        describe: 'Compare subjects',
+        type: 'boolean',
+        demandOption: false,
+    })
     .option('about', {
         describe: 'About eri',
         type: 'boolean',
@@ -106,48 +112,125 @@ if (yargs.argv.omen) {
 }
 
 if (yargs.argv.ammo) {
-    process.processQuery(yargs.argv.ammo, 'ammos').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'type', 'passive', 'attackPower'])
-    ));
+    const attr = new Set(['name', 'description', 'type', 'passive', 'attackPower']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.ammo, 'ammos').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'ammos').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.ammo, 'ammos')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.armor) {
-    process.processQuery(yargs.argv.armor, 'armor').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'category', 'weight', 'dmgNegation', 'resistance'])
-    ));
+    const attr = new Set(['name', 'description', 'category', 'weight', 'dmgNegation', 'resistance']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.armor, 'armors').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'armors').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.armor, 'armors')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.ashe) {
-    process.processQuery(yargs.argv.ashe, 'ashes').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'affinity', 'skill'])
-    ));
+    const attr = new Set(['name', 'description', 'affinity', 'skill']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.ashe, 'ashes').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'ashes').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.ashe, 'ashes')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.boss) {
-    process.processQuery(yargs.argv.boss, 'bosses').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'location', 'drops', 'healthPoints'])
-    ));
+    const attr = new Set(['name', 'description', 'location', 'drops', 'healthPoints']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.boss, 'bosses').then(res => {
+            const first = res;
+            first['request'] = yargs.argv.boss;
+            process.processQuery(yargs.argv._, 'bosses').then(res => {
+                const second = res;
+                second['request'] = yargs.argv._;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.boss, 'bosses')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.class) {
-    process.processQuery(yargs.argv.class, 'classes').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'stats'])
-    ));
+    const attr = new Set(['name', 'description', 'stats']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.class, 'classes').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'classes').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.class, 'classes')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.creature) {
-    process.processQuery(yargs.argv.creature, 'creatures').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'location', 'drops'])
-    ));
+    const attr = new Set(['name', 'description', 'location', 'drops']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.creature, 'creatures').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'creatures').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.creature, 'creatures')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.incantation) {
+    const attr = new Set(['name', 'description', 'stats']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.class, 'classes').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'classes').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.class, 'classes')
+            .then((res) => process.printData(res, attr));
+    }
+
     process.processQuery(yargs.argv.incantation, 'incantations').then((res) => process.printData(
         res,
         new Set(['name', 'description', 'type', 'cost', 'slots', 'effects', 'requires'])
@@ -155,59 +238,137 @@ if (yargs.argv.incantation) {
 }
 
 if (yargs.argv.item) {
-    process.processQuery(yargs.argv.item, 'items').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'type', 'effect'])
-    ));
+    const attr = new Set(['name', 'description', 'type', 'effect']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.item, 'items').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'items').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.item, 'items')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.location) {
-    process.processQuery(yargs.argv.location, 'locations').then((res) => process.printData(
-        res,
-        new Set(['name', 'description'])
-    ));
+    const attr = new Set(['name', 'description']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.location, 'locations').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'locations').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.location, 'locations')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.npc) {
-    process.processQuery(yargs.argv.npc, 'npcs').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'location', 'quote'])
-    ));
+    const attr = new Set(['name', 'description', 'location', 'quote']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.npc, 'npcs').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'npcs').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.npc, 'npcs')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.shield) {
-    process.processQuery(yargs.argv.shield, 'shields').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'category', 'weight', 'attack', 'defence', 'requiredAttributes', 'scalesWith'])
-    ));
+    const attr = new Set(['name', 'description', 'category', 'weight', 'attack', 'defence', 'requiredAttributes', 'scalesWith']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.shield, 'shields').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'shields').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.shield, 'shields')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.sorcery) {
-    process.processQuery(yargs.argv.sorcery, 'sorceries').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'type', 'cost', 'slots', 'effects', 'requires'])
-    ));
+    const attr = new Set(['name', 'description', 'type', 'cost', 'slots', 'effects', 'requires']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.sorcery, 'sorceries').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'sorceries').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.sorcery, 'sorceries')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.spirit) {
-    process.processQuery(yargs.argv.spirit, 'spirits').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'fpCost', 'hpCost', 'effects'])
-    ));
+    const attr = new Set(['name', 'description', 'fpCost', 'hpCost', 'effects']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.spirit, 'spirits').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'spirit').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.spirit, 'spirits')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.talisman) {
-    process.processQuery(yargs.argv.talisman, 'talismans').then((res) => process.printData(
-        res,
-        new Set(['name', 'description', 'effects'])
-    ));
+    const attr = new Set(['name', 'description', 'effects']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.talisman, 'talismans').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'talismans').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.talisman, 'talismans')
+            .then((res) => process.printData(res, attr));
+    }
 }
 
 if (yargs.argv.weapon) {
-    process
-        .processQuery(yargs.argv.weapon, 'weapons')
-        .then((res) => process.printData(
-            res,
-            new Set(['name', 'description', 'category', 'weight', 'attack', 'defence', 'requiredAttributes', 'scalesWith'])
-        ));
+    const attr = new Set(['name', 'description', 'category', 'weight', 'attack', 'defence', 'requiredAttributes', 'scalesWith']);
+    if (yargs.argv.c || yargs.argv.compare) {
+        process.processQuery(yargs.argv.weapon, 'weapons').then(res => {
+            const first = res;
+            process.processQuery(yargs.argv._, 'weapons').then(res => {
+                const second = res;
+                process.printComparison(first, second, attr);
+            })
+        });
+    } else {
+        process
+            .processQuery(yargs.argv.weapon, 'weapons')
+            .then((res) => process.printData(res, attr));
+    }
 }

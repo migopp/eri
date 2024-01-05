@@ -1,13 +1,14 @@
 module.exports = {
     processQuery: processQuery,
     printData: printData,
+    printComparison: printComparison,
 };
 
 const chalk = require('chalk');
 
 const name = chalk.bold.underline;
 const quote = chalk.italic;
-const attrName = chalk.bold.red;
+const attrName = chalk.bold.yellow;
 
 const erapi = 'https://eldenring.fanapis.com/api/';
 
@@ -42,7 +43,7 @@ function printData(info, args) {
                 if (!categoryData) {
                     continue;
                 } else if (categoryData.constructor === Array) {
-                    printFromObjectList(category, categoryData);
+                    printFromList(category, categoryData);
                 } else if (categoryData.constructor === Object) {
                     printFromObject(category, categoryData);
                 } else {
@@ -55,40 +56,144 @@ function printData(info, args) {
     }
 }
 
-function printFromObjectList(categoryName, categoryObjList) {
+function printComparison(first, second, args) {
+    if (first.data.length === 0) {
+        console.log(`E03: Found no data for argument "${first.request}" of \`-c\` request`);
+        return;
+    } else if (second.data.length === 0) {
+        console.log(`E03: Found no data for argument "${second.request}" of \`-c\` request`);
+        return;
+    }
+
+    for (const data in first.data) {
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~');
+        for (const category in first.data[data]) {
+            if (args.has(category)) {
+                const firstData = first.data[data][category];
+                const secondData = second.data[data][category];
+                if (!firstData || !secondData) {
+                    continue;
+                } else if (firstData.constructor === Array) {
+                    printFromList(category, firstData, secondData);
+                } else if (firstData.constructor === Object) {
+                    printFromObject(category, firstData, secondData);
+                } else {
+                    printField(category, firstData, secondData);
+                }
+                console.log();
+            }
+        }
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~');
+    }
+}
+
+function printFromList(categoryName, categoryList, optList) {
     const updatedCategoryName = correctName(categoryName);
     console.log(attrName(`${updatedCategoryName}:`));
-    for (const categoryObj in categoryObjList) {
-        for (const attribute in categoryObjList[categoryObj]) {
-            process.stdout.write(`\t${categoryObjList[categoryObj][attribute]} `);
+
+    for (const element in categoryList) {
+        if (categoryList[element].constructor === Object) {
+            for (const attribute in categoryList[element]) {
+                const catData = categoryList[element][attribute];
+                const optData = optList[element] ? optList[element][attribute] : undefined;
+
+                process.stdout.write(`\t${catData}`);
+
+                if (typeof optData != 'undefined') {
+                    if (attribute === 'amount' || attribute === 'scaling') {
+                        const highlight = determineColoring(catData, optData, categoryName);
+                        process.stdout.write(`\t<>\t${highlight(optData)}`);
+                    }
+                } else if (optList) {
+                    if (attribute !== 'name') {
+                        process.stdout.write(`\t<>\t${chalk.green('N/A')}`);
+                    }
+                }
+            }
+        } else {
+            process.stdout.write(`\t${categoryList[element]}`)
+            if (typeof optList[element] != 'undefined') {
+                process.stdout.write(`  <>  ${optList[element]}`);
+            }
+        }
+        console.log();
+    }
+
+    if (optList && (optList.length > categoryList.length)) {
+        for (let index = categoryList.length; index < optList.length; index++) {
+            if (optList[index].constructor === Object) {
+                for (const attribute in optList[index]) {
+                    const optData = optList[index][attribute];
+
+                    if (attribute !== 'name') {
+                        process.stdout.write(`\tN/A\t<>`);
+                    }
+
+                    const highlight = attribute === 'name' ?
+                        chalk.reset : categoryName === 'scalesWith' ?
+                            chalk.green : chalk.red;
+                    process.stdout.write(`\t${highlight(optData)}`);
+                }
+            } else {
+
+            }
+        }
+    }
+}
+
+function printFromObject(categoryName, categoryObj, optObj) {
+    const updatedCategoryName = correctName(categoryName);
+    console.log(attrName(`${updatedCategoryName}:`));
+
+    for (const attribute in categoryObj) {
+        process.stdout.write(`\t${attribute.slice(0, 5)} \t${categoryObj[attribute]}`);
+
+        if (typeof optObj != 'undefined') {
+            const highlight = determineColoring(categoryObj[attribute], optObj[attribute], categoryName);
+            process.stdout.write(`\t<>\t${highlight(optObj[attribute])}`);
         }
         console.log();
     }
 }
 
-function printFromObject(categoryName, categoryObj) {
-    const updatedCategoryName = correctName(categoryName);
-    console.log(attrName(`${updatedCategoryName}:`));
-    for (const attribute in categoryObj) {
-        process.stdout.write(`\t${attribute.slice(0, 5)} \t${categoryObj[attribute]}`);
-        console.log();
-    }
-}
-
-function printField(categoryName, categoryData) {
+function printField(categoryName, categoryData, optData) {
     switch (categoryName) {
         case "name":
-            console.log(name(categoryData));
+            process.stdout.write(name(categoryData));
+
+            if (optData) {
+                process.stdout.write(` <> ${name(optData)}`);
+            }
+
+            console.log();
             break;
         case "quote":
             console.log(quote(`"${categoryData}"`));
+
+            if (optData) {
+                console.log(`\n${quote(`"${optData}"`)}`);
+            }
+
             break;
         case "location":
-            console.log(`${attrName('Located @ ')}${categoryData}`);
+            process.stdout.write(`${attrName('Located @ ')}${categoryData}`);
+
+            if (optData) {
+                process.stdout.write(` and ${optData}`);
+            }
+
+            console.log();
             break;
         default:
             const updatedCategoryName = correctName(categoryName);
-            console.log(`${attrName(`${updatedCategoryName}:`)} ${categoryData}`);
+            process.stdout.write(`${attrName(`${updatedCategoryName}:`)} ${categoryData}`);
+
+            if (typeof optData != 'undefined') {
+                const highlight = determineColoring(categoryData, optData, categoryName);
+                process.stdout.write(` <> ${highlight(optData)}`);
+            }
+
+            console.log();
             break;
     }
 }
@@ -115,3 +220,18 @@ function correctName(name) {
             return `${name.substring(0, 1).toUpperCase()}${name.substring(1)}`
     }
 }
+
+const coloringBlacklist = new Set([
+    'description', 'category', 'effects', 'type', 'location',
+    'quote', 'drops', 'affinity', 'skill', 'passive']);
+const coloringInvertList = new Set(['scalesWith', 'requiredAttributes']);
+function determineColoring(first, second, category) {
+    if (first === second || coloringBlacklist.has(category)) {
+        return chalk.reset;
+    } else if (coloringInvertList.has(category)) {
+        return first > second ? chalk.green : chalk.red;
+    } else {
+        return first > second ? chalk.red : chalk.green;
+    }
+}
+

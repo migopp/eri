@@ -116,8 +116,10 @@ if (yargs.argv.ammo) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.ammo, 'ammos').then(res => {
             const first = res;
+            first['request'] = yargs.argv.ammo;
             process.processQuery(yargs.argv._, 'ammos').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -133,8 +135,10 @@ if (yargs.argv.armor) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.armor, 'armors').then(res => {
             const first = res;
+            first['request'] = yargs.argv.armor;
             process.processQuery(yargs.argv._, 'armors').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -150,8 +154,10 @@ if (yargs.argv.ashe) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.ashe, 'ashes').then(res => {
             const first = res;
+            first['request'] = yargs.argv.ashe;
             process.processQuery(yargs.argv._, 'ashes').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -170,7 +176,7 @@ if (yargs.argv.boss) {
             first['request'] = yargs.argv.boss;
             process.processQuery(yargs.argv._, 'bosses').then(res => {
                 const second = res;
-                second['request'] = yargs.argv._;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -186,8 +192,10 @@ if (yargs.argv.class) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.class, 'classes').then(res => {
             const first = res;
+            first['request'] = yargs.argv.class;
             process.processQuery(yargs.argv._, 'classes').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -203,8 +211,10 @@ if (yargs.argv.creature) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.creature, 'creatures').then(res => {
             const first = res;
+            first['request'] = yargs.argv.creature;
             process.processQuery(yargs.argv._, 'creatures').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -220,8 +230,10 @@ if (yargs.argv.incantation) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.class, 'classes').then(res => {
             const first = res;
+            first['request'] = yargs.argv.incantation;
             process.processQuery(yargs.argv._, 'classes').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -242,8 +254,10 @@ if (yargs.argv.item) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.item, 'items').then(res => {
             const first = res;
+            first['request'] = yargs.argv.item;
             process.processQuery(yargs.argv._, 'items').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -259,8 +273,10 @@ if (yargs.argv.location) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.location, 'locations').then(res => {
             const first = res;
+            first['request'] = yargs.argv.location;
             process.processQuery(yargs.argv._, 'locations').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -276,8 +292,10 @@ if (yargs.argv.npc) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.npc, 'npcs').then(res => {
             const first = res;
+            first['request'] = yargs.argv.npc;
             process.processQuery(yargs.argv._, 'npcs').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -293,8 +311,10 @@ if (yargs.argv.shield) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.shield, 'shields').then(res => {
             const first = res;
+            first['request'] = yargs.argv.shield;
             process.processQuery(yargs.argv._, 'shields').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -310,8 +330,10 @@ if (yargs.argv.sorcery) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.sorcery, 'sorceries').then(res => {
             const first = res;
+            first['request'] = yargs.argv.sorcery;
             process.processQuery(yargs.argv._, 'sorceries').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -327,8 +349,10 @@ if (yargs.argv.spirit) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.spirit, 'spirits').then(res => {
             const first = res;
+            first['request'] = yargs.argv.spirit;
             process.processQuery(yargs.argv._, 'spirit').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -344,8 +368,10 @@ if (yargs.argv.talisman) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.talisman, 'talismans').then(res => {
             const first = res;
+            first['request'] = yargs.argv.talisman;
             process.processQuery(yargs.argv._, 'talismans').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -361,8 +387,10 @@ if (yargs.argv.weapon) {
     if (yargs.argv.c || yargs.argv.compare) {
         process.processQuery(yargs.argv.weapon, 'weapons').then(res => {
             const first = res;
+            first['request'] = yargs.argv.weapon;
             process.processQuery(yargs.argv._, 'weapons').then(res => {
                 const second = res;
+                second['request'] = yargs.argv._[0];
                 process.printComparison(first, second, attr);
             })
         });
@@ -372,3 +400,4 @@ if (yargs.argv.weapon) {
             .then((res) => process.printData(res, attr));
     }
 }
+

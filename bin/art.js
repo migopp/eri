@@ -20,7 +20,7 @@ function drawAbout() {
                ███    ███      
 \n~~~ An Elden Ring CLI utility ~~~
 ---------------------------------
-~~~~~ eri 1.0 | dev: migopp ~~~~~
+~~~~~ eri 1.1 | dev: migopp ~~~~~
 \n       \`eri -h\` for help       `));
 }
 

@@ -65,26 +65,24 @@ function printComparison(first, second, args) {
         return;
     }
 
-    for (const data in first.data) {
-        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~');
-        for (const category in first.data[data]) {
-            if (args.has(category)) {
-                const firstData = first.data[data][category];
-                const secondData = second.data[data][category];
-                if (!firstData || !secondData) {
-                    continue;
-                } else if (firstData.constructor === Array) {
-                    printFromList(category, firstData, secondData);
-                } else if (firstData.constructor === Object) {
-                    printFromObject(category, firstData, secondData);
-                } else {
-                    printField(category, firstData, secondData);
-                }
-                console.log();
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~');
+    for (const category in first.data[0]) {
+        if (args.has(category)) {
+            const firstData = first.data[0][category];
+            const secondData = second.data[0][category];
+            if (!firstData || !secondData) {
+                continue;
+            } else if (firstData.constructor === Array) {
+                printFromList(category, firstData, secondData);
+            } else if (firstData.constructor === Object) {
+                printFromObject(category, firstData, secondData);
+            } else {
+                printField(category, firstData, secondData);
             }
+            console.log();
         }
-        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~');
     }
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~');
 }
 
 function printFromList(categoryName, categoryList, optList) {
@@ -94,10 +92,13 @@ function printFromList(categoryName, categoryList, optList) {
     for (const element in categoryList) {
         if (categoryList[element].constructor === Object) {
             for (const attribute in categoryList[element]) {
-                const catData = categoryList[element][attribute];
-                const optData = optList[element] ? optList[element][attribute] : undefined;
+                const catData = categoryList[element][attribute] === null ?
+                    0 : categoryList[element][attribute];
+                const optData = optList && optList[element] ?
+                    optList[element][attribute] : undefined;
 
-                process.stdout.write(`\t${catData}`);
+                const corrCatData = attribute === 'name' && catData.length > 5 ? catData.slice(0, 5) : catData;
+                process.stdout.write(`\t${corrCatData}`);
 
                 if (typeof optData != 'undefined') {
                     if (attribute === 'amount' || attribute === 'scaling') {
@@ -112,7 +113,7 @@ function printFromList(categoryName, categoryList, optList) {
             }
         } else {
             process.stdout.write(`\t${categoryList[element]}`)
-            if (typeof optList[element] != 'undefined') {
+            if (optList && typeof optList[element] != 'undefined') {
                 process.stdout.write(`  <>  ${optList[element]}`);
             }
         }

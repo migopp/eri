@@ -11,7 +11,7 @@ const options = yargs
     })
     .option('c', {
         alias: 'compare',
-        describe: 'Compare subjects',
+        describe: 'Compare subjects: `-c <flag> <args>`',
         type: 'boolean',
         demandOption: false,
     })
@@ -385,7 +385,7 @@ if (yargs.argv.talisman) {
 if (yargs.argv.weapon) {
     const attr = new Set(['name', 'description', 'category', 'weight', 'attack', 'defence', 'requiredAttributes', 'scalesWith']);
     if (yargs.argv.c || yargs.argv.compare) {
-        process.processQuery(yargs.argv.weapon, 'weapons').then(res => {
+        process.processQuery(yargs.argv.weapomn, 'weapons').then(res => {
             const first = res;
             first['request'] = yargs.argv.weapon;
             process.processQuery(yargs.argv._, 'weapons').then(res => {

@@ -7,7 +7,6 @@ Query information about Elden Ring's various items, characters, and bosses quick
 
 ![Screen Recording 2024-01-03 at 7 56 31 PM](https://github.com/migopp/eri/assets/128272843/8f61f050-6285-49cf-a562-65134d40f2bd)
 
-
 ## Installation
 1. Clone this repository as `git clone https://github.com/migopp/eri.git`
 2. Navigate into the `eri/` directory
@@ -26,6 +25,11 @@ eri --weapon "Bloodhound's Fang"
 ```
 
 Argument case (or even completeness) does not matter. For example, the queries `eri --npc Patches` is the same as `eri --npc PAtCHES` and `eri --npc patches`. Incomplete queries will return available results with the indicated fragment.
+
+### Comparison: `-c`
+eri can also automate the process of comparing objects with the same type. For instance, one may wish to compare two bleed weapons such as the _Bloodhound's Fang_ and _Rivers of Blood_. Doing so would require the command: `eri -c --weapon "Bloodhound's Fang" "Rivers of Blood"`. Note that the `-c` boolean flag must always prefix the other flags and arguments.
+
+At this time eri only supports comparison of two objects at a time.
 
 ## Credits
 - https://github.com/deliton/eldenring-api
